@@ -17,17 +17,13 @@ export default class index extends Component {
             labels: [],
             banks: [],
             data: []
-
-
         }
-
-
         this.getData = this.getData.bind(this);
     }
 
     getData(result) {
         var xaxis = result.data[0].slice(0, 5)
-        var final = {}
+        var data = {}
         var banks = []
         for (var i = 0; i < result.data.length - 1; i++) {
             if (i !== 0) {
@@ -38,18 +34,16 @@ export default class index extends Component {
                     if (value === "----") {
                         values.push({ x: xaxis[j], y: 0.0 })
                     } else {
-                        values.push({ x: xaxis[j], y: parseFloat(row[j]) })
+                        values.push({ x: xaxis[j], y: parseFloat(row[j].replace(",", ".")) })
                     }
-
-
                 }
-                final[row[5]] = values
+                data[row[5]] = values
                 banks.push(row[5])
             }
         }
         this.setState({ labels: xaxis })
         this.setState({ banks: banks })
-        this.setState({ data: final })
+        this.setState({ data: data })
         this.setState({ isLoading: false });
 
     }
@@ -79,11 +73,9 @@ export default class index extends Component {
             });
         });
     }
+
     async getCsvData() {
-
-
         let csvData = await this.fetchCsv();
-
         Papa.parse(csvData, {
             complete: this.getData
         });
@@ -91,40 +83,35 @@ export default class index extends Component {
 
 
     render() {
+
         const { isLoading, width, labels, banks, data } = this.state
-        console.log(isLoading, labels, data, data['BBVA'])
+
         if (isLoading) {
             return <div className="App">Loading...</div>;
         }
         else {
-            console.log(data['BBVA'][0].y);
-
             return (
-                <div style={{ zIndex: "1.5", marginTop: "70px", backgroundColor: "transparents" }}>
+                <div >
                     <Navbar />
-
-                    <h3 style={{ marginTop: "90px" }}> DEPOSITO A PLAZO</h3>
+                    <h3 className="first-element"> DEPOSITO A PLAZO</h3>
                     <DiscreteColorLegend items={banks} orientation='horizontal' />
-                    <XYPlot
-                        width={width}
+                    <XYPlot margin={{ right: 20 }}
+                        width={width - 15}
                         height={400}
                         xType="ordinal"
                     >
                         <HorizontalGridLines />
-
                         {banks.map(banks => (
                             <LineSeries
                                 title={banks}
                                 data={data[banks]}
                             />
                         ))}
-
-
-
-                        <YAxis />
-                        <XAxis />
+                        <YAxis title="% Tasa" />
+                        <XAxis title="Periodo" titlePositionX="50%" />
                     </XYPlot>
-                    <Table striped bordered hover>
+
+                    <Table striped bordered hover className="table-class">
                         <thead>
                             <tr>
                                 <th>Banco</th>
@@ -134,7 +121,6 @@ export default class index extends Component {
                             </tr>
                         </thead>
                         <tbody>
-
                             {banks.map(banks => (
                                 <tr>
                                     <td>{banks}</td>
@@ -143,11 +129,8 @@ export default class index extends Component {
                                     <th>{data[banks][2].y}</th>
                                     <th>{data[banks][3].y}</th>
                                     <th>{data[banks][4].y}</th>
-
-
                                 </tr>
                             ))}
-
                         </tbody>
                     </Table>
                 </div>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Navbar from "../Features/Navbar"
 import Papa from 'papaparse';
-import { XYPlot, XAxis, YAxis, HorizontalGridLines, VerticalGridLines, LabelSeries, VerticalBarSeries, ChartLabel } from 'react-vis';
+import { XYPlot, XAxis, YAxis, HorizontalGridLines, VerticalGridLines, LabelSeries, VerticalBarSeries } from 'react-vis';
 import { Table } from 'react-bootstrap';
 
 export default class index extends Component {
@@ -90,22 +90,22 @@ export default class index extends Component {
             console.log(bankList, banks);
             return (
                 <div>
-                    <div style={{ zIndex: "1.5", marginTop: "70px", backgroundColor: "transparents" }}>
+                    <div className="first-element">
                         <Navbar />
 
                         <h3 style={{ marginTop: "90px" }}> CUENTA DE AHORRO</h3>
-                        <XYPlot xType="ordinal" width={width} height={350} xDistance={150} margin={{ bottom: 90 }}>
+                        <XYPlot xType="ordinal" width={width} height={350} xDistance={150} margin={{ bottom: 90, right: 20 }}>
                             <VerticalGridLines />
                             <HorizontalGridLines />
-                            <XAxis tickLabelAngle={-70} tickSizeOuter={10} height={60} />
-                            <YAxis />
+                            <XAxis title="Banco" tickLabelAngle={-70} tickSizeOuter={10} height={60} />
+                            <YAxis title="% Tasa" />
                             <VerticalBarSeries data={data} />
                             <LabelSeries data={banks} getLabel={d => d.x} />
                         </XYPlot>
 
                     </div>
 
-                    <Table striped bordered hover style={{ marginTop: "30px" }}>
+                    <Table striped bordered hover className="table-class">
                         <thead>
                             <tr>
                                 {labels.map(labels => (
@@ -122,8 +122,6 @@ export default class index extends Component {
                                     <td>{bankList[banks]["Tipo de Cuenta"]}</td>
                                 </tr>
                             ))}
-
-
                         </tbody>
                     </Table>
                 </div>

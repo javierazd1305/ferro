@@ -14,3 +14,12 @@ html body {
     font-size: 1.25rem;
     color: black;
   }
+  .first-element{
+    z-index: 1.5;
+    margin-top: 100px;
+    background-color: transparent;
+  }
+
+.table-class{
+  margin-top: 20px;
+}

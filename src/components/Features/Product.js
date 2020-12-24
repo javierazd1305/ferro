@@ -36,8 +36,6 @@ export default class Product extends Component {
                                 </Card.Body>
                             </Card>
                         </div>
-
-
                     </div>
                 </div>
 
